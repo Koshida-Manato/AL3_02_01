@@ -1,21 +1,45 @@
 #include "GameScene.h"
+#include "Player.h"
 #include "TextureManager.h"
 #include <cassert>
 
 GameScene::GameScene() {}
 
-GameScene::~GameScene() {}
+GameScene::~GameScene() { 
+		delete model_; 
+		//自キャラの解放
+	    delete player_;
+}
 
 void GameScene::Initialize() {
 
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
+	//ファイル名を指定してテクスチャを読み込む
+	Orb_ = TextureManager::Load("./Resources/Orb.png");
+	//3Dモデルの生成
+	model_ = Model::Create();
+	//ワールドトランスフォームの初期化
+	worldTransform_.Initialize();
+	//ビュープロジェクションの初期化
+	viewProjection_.Initialize();
+	//自キャラの生成
+	player_ = new Player();
+	//自キャラの初期化
+	player_->Initialize(model_, Orb_);
 }
 
-void GameScene::Update() {}
+void GameScene::Update() {
+
+	//自キャラの更新
+	player_->Update();
+
+}
 
 void GameScene::Draw() {
+
+	
 
 	// コマンドリストの取得
 	ID3D12GraphicsCommandList* commandList = dxCommon_->GetCommandList();
@@ -37,6 +61,8 @@ void GameScene::Draw() {
 #pragma region 3Dオブジェクト描画
 	// 3Dオブジェクト描画前処理
 	Model::PreDraw(commandList);
+
+	player_->Draw(viewProjection_);
 
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
