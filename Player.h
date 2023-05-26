@@ -34,4 +34,6 @@ class Player {
 	    Model* model_ = nullptr;
 		//テクスチャハンドル
 	    uint32_t Orb_ = 0u;
+	    // キーボード入力
+	    Input* input_ = nullptr;
 };
