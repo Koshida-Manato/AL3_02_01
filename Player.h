@@ -4,6 +4,7 @@
 #include "WorldTransform.h"
 #include "Input.h"
 #include "Model.h"
+#include "PlayerBullet.h"
 
 ///<summary>
 ///自キャラ
@@ -27,6 +28,11 @@ class Player {
 		///</sumary>
 	    void Draw(ViewProjection& viewProjection);
 
+		/// <summary>
+		/// 攻撃
+		/// </summary>
+	    void Attack();
+
 	private:
 		//ワールド変換データ
 	    WorldTransform worldTransform_;
@@ -36,4 +42,6 @@ class Player {
 	    uint32_t Orb_ = 0u;
 	    // キーボード入力
 	    Input* input_ = nullptr;
+		//弾
+	    PlayerBullet* bullet_ = nullptr;
 };
