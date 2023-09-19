@@ -10,6 +10,7 @@
 #include "WorldTransform.h"
 #include "Player.h"
 #include "DebugCamera.h"
+#include "Enemy.h"
 
 /// <summary>
 /// ゲームシーン
@@ -42,24 +43,35 @@ public: // メンバ関数
 	/// </summary>
 	void Draw();
 
+	/// <summary>
+	/// 衝突判定と応答
+	/// </summary>
+	void CheckAllCollisions();
+
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
 	//テクスチャハンドル
-	uint32_t Orb_ = 0;
-	//3Dモデル
-	Model* model_ = nullptr;
+	uint32_t Kasu_ = 0;
+	//敵テクスチャハンドル
+	uint32_t Teki_ = 0;
+	//プレイヤー3Dモデル
+	Model* playerModel_ = nullptr;
+	//敵3Dモデル
+	Model* enemyModel_ = nullptr;
 	//ワールドトランスフォーム
 	WorldTransform worldTransform_;
 	//ビュープロジェクション
 	ViewProjection viewProjection_;
 	//自キャラ
 	Player* player_ = nullptr;
+	//敵
+	Enemy* enemy_ = nullptr;
 	//デバッグカメラ
 	DebugCamera* debugCamera_ = nullptr;
 	//デバッグカメラ有効
-	bool isDebugCameraActive_ = false; 
+	bool isDebugCameraActive_ = false;
 
 	/// <summary>
 	/// ゲームシーン用

@@ -19,9 +19,6 @@
     <Filter Include="ヘッダー ファイル\3d">
       <UniqueIdentifier>{8ccef709-d514-43f7-ad35-629a9edd5057}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ヘッダー ファイル\2d">
-      <UniqueIdentifier>{96135050-efba-425e-a9fe-8881bd7caad8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ヘッダー ファイル\audo">
       <UniqueIdentifier>{3a0044cc-1b7d-4ed5-a1a6-9074ed1b1769}</UniqueIdentifier>
     </Filter>
@@ -52,6 +49,9 @@
     <Filter Include="ソース ファイル\2d">
       <UniqueIdentifier>{814a0f6d-f847-4c45-856d-4688fa4c9e6c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\3d\2d">
+      <UniqueIdentifier>{96135050-efba-425e-a9fe-8881bd7caad8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -79,6 +79,12 @@
       <Filter>ソース ファイル\scene</Filter>
     </ClCompile>
     <ClCompile Include="MyMath.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyBullet.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -117,7 +123,7 @@
       <Filter>ヘッダー ファイル\3d</Filter>
     </ClInclude>
     <ClInclude Include="2d\Sprite.h">
-      <Filter>ヘッダー ファイル\2d</Filter>
+      <Filter>ヘッダー ファイル\3d\2d</Filter>
     </ClInclude>
     <ClInclude Include="audio\Audio.h">
       <Filter>ヘッダー ファイル\audo</Filter>
@@ -165,7 +171,7 @@
       <Filter>ヘッダー ファイル\3d</Filter>
     </ClInclude>
     <ClInclude Include="2d\ImGuiManager.h">
-      <Filter>ヘッダー ファイル\2d</Filter>
+      <Filter>ヘッダー ファイル\3d\2d</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>ヘッダー ファイル</Filter>
@@ -174,6 +180,12 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="MyMath.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyBullet.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

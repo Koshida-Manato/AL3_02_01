@@ -5,6 +5,7 @@
 #include "Input.h"
 #include "Model.h"
 #include "PlayerBullet.h"
+#include <list>
 
 ///<summary>
 ///自キャラ
@@ -17,6 +18,11 @@ class Player {
 		/// <param name="model">モデル</param>
 		/// <param name="textureHandle">テクスチャハンドル</param>
 	    void Initialize(Model* model, uint32_t Orb);
+
+		/// <summary>
+		/// デストラクタ
+		/// </summary>
+		~Player();
 
 		///< summary>
 		/// 更新
@@ -33,6 +39,15 @@ class Player {
 		/// </summary>
 	    void Attack();
 
+		//衝突を検出したら呼び出されるコールバック関数
+	    void OnCollision();
+
+		// ワールド座標を取得
+	    Vector3 GetWorldPosition();    
+
+		//弾リストを取得
+	    const std::list<PlayerBullet*>& GetBullets() const { return bullets_; }
+
 	private:
 		//ワールド変換データ
 	    WorldTransform worldTransform_;
@@ -43,5 +58,6 @@ class Player {
 	    // キーボード入力
 	    Input* input_ = nullptr;
 		//弾
-	    PlayerBullet* bullet_ = nullptr;
+	    std::list<PlayerBullet*> bullets_;
+		
 };

@@ -5,6 +5,7 @@
 
 //Matrix4x4 MakeAffinMatrix(const Vector3& scale, const Vector3& rot, const Vector3& translate);
 
+
 void Player::Initialize(Model* model, uint32_t Orb) {
 	assert(model);
 
@@ -12,13 +13,19 @@ void Player::Initialize(Model* model, uint32_t Orb) {
 	Orb_ = Orb;
 
 	// X.Y.Z軸方向のスケーリングを設定
-	worldTransform_.scale_ = {4.0f, 4.0f, 4.0f};
+	worldTransform_.scale_ = {5.0f, 5.0f, 5.0f};
 	worldTransform_.translation_ = {0.0f, 0.0f, 0.0f};
 	
 
 	worldTransform_.Initialize();
 	//シングルトンインスタンスを取得する
 	input_ = Input::GetInstance();
+}
+
+Player::~Player() { 
+	for ( PlayerBullet*bullet : bullets_) {
+		delete bullet;
+	}
 }
 
 void Player::Update() {
@@ -76,29 +83,38 @@ void Player::Update() {
 	//行列を定数バッファに転送
 	worldTransform_.TransferMatrix();
 
+	//デスフラグの立った弾を削除
+	bullets_.remove_if([](PlayerBullet* bullet) {
+		if (bullet->IsDead()) {
+			delete bullet;
+			return true;
+		}
+		return false;
+	});
+
 	//////////プレイヤーの移動///////////////
 	//キャラクターの移動ベクトル
-	Vector3 move = {0, 0, 0};
+	Vector3 playerMove = {0, 0, 0};
 
 	//キャラクターの移動の速さ
 	const float kCharacterSpeed = 0.2f;
 
 	//押した方向で移動ベクトルを変更(左右)
 	if (input_->PushKey(DIK_LEFT)) {
-		move.x -= kCharacterSpeed;
+		playerMove.x -= kCharacterSpeed;
 	} else if (input_->PushKey(DIK_RIGHT)) {
-		move.x += kCharacterSpeed;
+		playerMove.x += kCharacterSpeed;
 	}
 	//押した方向で移動ベクトルを変更(上下)
 	if (input_->PushKey(DIK_UP)) {
-		move.y += kCharacterSpeed;
+		playerMove.y += kCharacterSpeed;
 	} else if (input_->PushKey(DIK_DOWN)) {
-		move.y -= kCharacterSpeed;
+		playerMove.y -= kCharacterSpeed;
 	}
 	//座標移動(ベクトルの加算)
-	worldTransform_.translation_.x += move.x;
-	worldTransform_.translation_.y += move.y;
-	worldTransform_.translation_.z += move.z;
+	worldTransform_.translation_.x += playerMove.x;
+	worldTransform_.translation_.y += playerMove.y;
+	worldTransform_.translation_.z += playerMove.z;
 	//////////////////////////////////////////
 
 	
@@ -140,24 +156,46 @@ void Player::Update() {
 	Attack();
 
 	//弾更新
-	if (bullet_) {
-		bullet_->Update();
+	for (PlayerBullet* bullet : bullets_) {
+		bullet->Update();
 	}
 }
 void Player::Attack() {
 	if (input_->TriggerKey(DIK_SPACE)) {
+		//弾があれば解放する
+		/*if (bullet_) {
+			delete bullet_;
+			bullet_ = nullptr;
+		}*/
+		//弾の速度
+		const float kBulletSpeed = 1.0f;
+		Vector3 velocity(0, 0, kBulletSpeed);
+		//速度ベクトルを自機の向きに合わせて回転させる
+		velocity = TransformNormal(velocity, worldTransform_.matWorld_);
+
 		// 弾を生成し、初期化
 		PlayerBullet* newBullet = new PlayerBullet();
-		newBullet->Initialize(model_, worldTransform_.translation_);
+		newBullet->Initialize(model_, worldTransform_.translation_,velocity);
 		// 弾を登録する
-		bullet_ = newBullet;
+		bullets_.push_back(newBullet);
 	}
 };
 void Player::Draw(ViewProjection& viewProjection) {
 	//3Dモデルの描画
 	model_->Draw(worldTransform_, viewProjection, Orb_);
 	//弾描画
-	if (bullet_) {
-		bullet_->Draw(viewProjection);
+	for (PlayerBullet* bullet : bullets_) {
+		bullet->Draw(viewProjection);
 	}
+}
+
+Vector3 Player::GetWorldPosition() {
+	// ワールド座標を入れる変数
+	Vector3 worldPos;
+	// ワールド行列の平行移動成分を取得（ワールド座標）
+	worldPos.x = worldTransform_.matWorld_.m[3][0];
+	worldPos.y = worldTransform_.matWorld_.m[3][1];
+	worldPos.z = worldTransform_.matWorld_.m[3][2];
+
+	return worldPos;
 }
