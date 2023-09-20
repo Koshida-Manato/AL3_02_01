@@ -23,9 +23,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	win = WinApp::GetInstance();
 	win->CreateGameWindow(L"LE2C_11_コシダ_マナト_AL3");
 
-	int GAMECLEAR = TextureManager::Load("./Resources/GAMECLEAR.png");
-	int scene = 1;
-
 	// DirectX初期化処理
 	dxCommon = DirectXCommon::GetInstance();
 	dxCommon->Initialize(win);
