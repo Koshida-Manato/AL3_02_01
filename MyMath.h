@@ -1,9 +1,10 @@
 ﻿#pragma once
 #include "Matrix4x4.h"
 #include "Vector3.h"
+#include "WorldTransform.h"
 
 // プロトタイプ宣言 ( int num;
-
+Matrix4x4 Initialize();
 //足し算
 Vector3 Add(Vector3 vector1, Vector3 vector2);
     /// <summary>行列の掛け算 </summary>
@@ -27,3 +28,4 @@ Vector3 Normalize(const Vector3& v);
 Vector3 Velocity(Vector3 vector1, float kBulletSpeed);
 float Dot(Vector3 vector1, Vector3 vector2);
 float Length(Vector3 v);
+//void affin(WorldTransform& affin);

@@ -31,7 +31,9 @@ void PlayerBullet::Update() {
 	}
 }
 
-void PlayerBullet::OnCollision() { isDead_ = true; }
+void PlayerBullet::OnCollision() { 
+	isDead_ = true; 
+}
 
 void PlayerBullet::Draw(const ViewProjection& viewProjection) {
 	//モデルの描画

@@ -96,6 +96,8 @@ void Enemy::ApproachInitialize() {
 	//}
 }
 
+void Enemy::OnCollision() {}
+
 void Enemy::Fire() {
 	assert(player_);
 	// 弾の速度

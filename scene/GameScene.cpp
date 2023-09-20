@@ -14,6 +14,7 @@ GameScene::~GameScene() {
 	    delete player_;
 		//敵の解放
 	    delete enemy_;
+	    delete modelSkydome_;
 }
 
 void GameScene::Initialize() {
@@ -24,11 +25,15 @@ void GameScene::Initialize() {
 	//ファイル名を指定してテクスチャを読み込む
 	Kasu_ = TextureManager::Load("./Resources/kasu.png");
 	// テクスチャ読み込み
-	Teki_ = TextureManager::Load("./resources/Enemy.png");
+	Teki_ = TextureManager::Load("./Resources/Enemy.png");
+	//天球の読み込み
+	Skydome_ = TextureManager::Load("./Resources/skydome/uvChecker.png");
 	//プレイヤー3Dモデルの生成
 	playerModel_ = Model::Create();
 	//敵3Dモデルの生成
 	enemyModel_ = Model::Create();
+	//天球3Dモデルの生成
+	modelSkydome_ = Model::Create();
 	//ワールドトランスフォームの初期化
 	worldTransform_.Initialize();
 	//ビュープロジェクションの初期化
@@ -41,6 +46,12 @@ void GameScene::Initialize() {
 	enemy_ = new Enemy();
 	// 敵の初期化
 	enemy_->Initialize(enemyModel_, Teki_);
+	//天球の生成
+	skydome_ = new Skydome();
+	//3Dモデルの作成
+	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
+	//天球の初期化
+	skydome_->Initialize(modelSkydome_, Skydome_);
 	//デバッグカメラの生成
 	debugCamera_ = new DebugCamera(1280, 720);
 	//軸方向表示の表示を有効にする
@@ -79,6 +90,7 @@ void GameScene::Update() {
 	}
 
 #endif
+	CheckAllCollisions();
 }
 
 void GameScene::Draw() {
@@ -107,6 +119,8 @@ void GameScene::Draw() {
 	player_->Draw(viewProjection_);
 
 	enemy_->Draw(viewProjection_);
+
+	skydome_->Draw(viewProjection_);
 
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
@@ -152,9 +166,9 @@ void GameScene::CheckAllCollisions(){
 		float b = posB.y - posA.y;
 		float c = posB.z - posA.z;
 
-		float d = sqrt(a * a + b * b + c * c);
+		float d = sqrtf(a * a + b * b + c * c);
 
-		if (d <= 2) {
+		if (d <= 5.0f) {
 			//自キャラの衝突時コールバックを呼び出す
 			player_->OnCollision();
 			//敵弾の衝突時コールバックを呼び出す
@@ -176,9 +190,9 @@ void GameScene::CheckAllCollisions(){
 		float b = posB.y - posA.y;
 		float c = posB.z - posA.z;
 
-		float d = sqrt(a * a + b * b + c * c);
+		float d = sqrtf(a * a + b * b + c * c);
 
-		if (d <= 2) {
+		if (d <= 5.0f) {
 			//敵キャラの衝突時コールバックを呼び出す
 			enemy_->OnCollision();
 			//自弾の衝突時コールバックを呼び出す
@@ -201,8 +215,8 @@ void GameScene::CheckAllCollisions(){
 			float b = posB.y - posA.y;
 			float c = posB.z - posA.z;
 
-			float d = sqrt(a * a + b * b + c * c);
-			if (d <= 2) {
+			float d = sqrtf(a * a + b * b + c * c);
+			if (d <= 5.0f) {
 				//自弾の衝突時コールバックを呼び出す
 				bullet->OnCollision();
 				//敵弾の衝突時コールバックを呼び出す

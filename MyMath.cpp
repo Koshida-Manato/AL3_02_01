@@ -1,6 +1,12 @@
 ﻿#include "MyMath.h"
 #include "math.h"
 
+Matrix4x4 Initialize() {
+	Matrix4x4 matInitialize = {1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+	                         0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+
+	return matInitialize;
+}
 Vector3 Add(Vector3 vector1, Vector3 vector2) {
 	Vector3 result;
 	result.x = vector1.x + vector2.x;
@@ -189,3 +195,14 @@ Vector3 Velocity(Vector3 vector1, float kBulletSpeed) {
 
 	return result;
 };
+//Matrix4x4 Scale(Vector3 scale) {
+//
+//	// スケーリング行列を宣言
+//	Matrix4x4 matScale = {scale.x, 0.0f, 0.0f,    0.0f, 0.0f, scale.y, 0.0f, 0.0f,
+//	                    0.0f,    0.0f, scale.z, 0.0f, 0.0f, 0.0f,    0.0f, 1.0f};
+//
+//	Matrix4x4 scaling = Initialize();
+//	scaling = matScale * scaling;
+//
+//	return scaling;
+//}

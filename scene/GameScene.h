@@ -11,6 +11,7 @@
 #include "Player.h"
 #include "DebugCamera.h"
 #include "Enemy.h"
+#include "Skydome.h"
 
 /// <summary>
 /// ゲームシーン
@@ -56,10 +57,14 @@ private: // メンバ変数
 	uint32_t Kasu_ = 0;
 	//敵テクスチャハンドル
 	uint32_t Teki_ = 0;
+	//天球テクスチャハンドル
+	uint32_t Skydome_ = 0;
 	//プレイヤー3Dモデル
 	Model* playerModel_ = nullptr;
 	//敵3Dモデル
 	Model* enemyModel_ = nullptr;
+	//天球
+	Model* modelSkydome_ = nullptr;
 	//ワールドトランスフォーム
 	WorldTransform worldTransform_;
 	//ビュープロジェクション
@@ -68,6 +73,8 @@ private: // メンバ変数
 	Player* player_ = nullptr;
 	//敵
 	Enemy* enemy_ = nullptr;
+	//天球
+	Skydome* skydome_ = nullptr;
 	//デバッグカメラ
 	DebugCamera* debugCamera_ = nullptr;
 	//デバッグカメラ有効

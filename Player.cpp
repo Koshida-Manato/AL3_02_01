@@ -179,7 +179,8 @@ void Player::Attack() {
 		// 弾を登録する
 		bullets_.push_back(newBullet);
 	}
-};
+}
+void Player::OnCollision(){};
 void Player::Draw(ViewProjection& viewProjection) {
 	//3Dモデルの描画
 	model_->Draw(worldTransform_, viewProjection, Orb_);
