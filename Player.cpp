@@ -177,7 +177,7 @@ void Player::Attack() {
 
 		// 弾を生成し、初期化
 		PlayerBullet* newBullet = new PlayerBullet();
-		newBullet->Initialize(model_, worldTransform_.translation_,velocity);
+		newBullet->Initialize(model_, GetWorldPosition(),velocity);
 		// 弾を登録する
 		bullets_.push_back(newBullet);
 	}

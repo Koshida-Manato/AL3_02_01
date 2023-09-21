@@ -119,7 +119,7 @@ void GameScene::Update() {
 	//viewProjection_.matProjection = railCamera_->GetViewProjection().matProjection;
 	//// ビュープロジェクション行列の転送
 	//viewProjection_.TransferMatrix();
-	//CheckAllCollisions();
+	CheckAllCollisions();
 }
 
 void GameScene::Draw() {
@@ -196,7 +196,7 @@ void GameScene::CheckAllCollisions() {
 
 		float d = sqrtf(a * a + b * b + c * c);
 
-		if (d <= 7.0f) {
+		if (d <= 6.0f) {
 			//自キャラの衝突時コールバックを呼び出す
 			player_->OnCollision();
 			// 敵弾の衝突時コールバックを呼び出す
@@ -220,7 +220,7 @@ void GameScene::CheckAllCollisions() {
 
 		float d = sqrtf(a * a + b * b + c * c);
 
-		if (d <= 7.0f) {
+		if (d <= 6.0f) {
 			//敵キャラの衝突時コールバックを呼び出す
 			enemy_->OnCollision();
 			// 自弾の衝突時コールバックを呼び出す
@@ -244,7 +244,7 @@ void GameScene::CheckAllCollisions() {
 			float c = posB.z - posA.z;
 
 			float d = sqrtf(a * a + b * b + c * c);
-			if (d <= 7.0f) {
+			if (d <= 6.0f) {
 				//自弾の衝突時コールバックを呼び出す
 				bullet->OnCollision();
 				// 敵弾の衝突時コールバックを呼び出す
