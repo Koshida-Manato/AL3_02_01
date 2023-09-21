@@ -196,8 +196,8 @@ void GameScene::CheckAllCollisions() {
 
 		float d = sqrtf(a * a + b * b + c * c);
 
-		if (d <= 0.0f) {
-			// 自キャラの衝突時コールバックを呼び出す
+		if (d <= 7.0f) {
+			//自キャラの衝突時コールバックを呼び出す
 			player_->OnCollision();
 			// 敵弾の衝突時コールバックを呼び出す
 			bullet->OnCollision();
@@ -220,8 +220,8 @@ void GameScene::CheckAllCollisions() {
 
 		float d = sqrtf(a * a + b * b + c * c);
 
-		if (d <= 0.0f) {
-			// 敵キャラの衝突時コールバックを呼び出す
+		if (d <= 7.0f) {
+			//敵キャラの衝突時コールバックを呼び出す
 			enemy_->OnCollision();
 			// 自弾の衝突時コールバックを呼び出す
 			bullet->OnCollision();
@@ -244,8 +244,8 @@ void GameScene::CheckAllCollisions() {
 			float c = posB.z - posA.z;
 
 			float d = sqrtf(a * a + b * b + c * c);
-			if (d <= 0.0f) {
-				// 自弾の衝突時コールバックを呼び出す
+			if (d <= 7.0f) {
+				//自弾の衝突時コールバックを呼び出す
 				bullet->OnCollision();
 				// 敵弾の衝突時コールバックを呼び出す
 				bullet2->OnCollision();
