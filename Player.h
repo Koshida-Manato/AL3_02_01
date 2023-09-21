@@ -17,7 +17,7 @@ class Player {
 		///</sumary>
 		/// <param name="model">モデル</param>
 		/// <param name="textureHandle">テクスチャハンドル</param>
-	    void Initialize(Model* model, uint32_t Orb);
+	    void Initialize(Model* model, uint32_t Orb, Vector3 playerPosition);
 
 		/// <summary>
 		/// デストラクタ
@@ -43,10 +43,15 @@ class Player {
 	    void OnCollision();
 
 		// ワールド座標を取得
-	    Vector3 GetWorldPosition();    
+	    Vector3 GetWorldPosition();
 
 		//弾リストを取得
 	    const std::list<PlayerBullet*>& GetBullets() const { return bullets_; }
+
+		/// <summary>
+		/// 親となるワールドトランスフォームをセット
+		/// </summary>
+	    void SetParent(const WorldTransform* parent);
 
 	private:
 		//ワールド変換データ
@@ -55,6 +60,8 @@ class Player {
 	    Model* model_ = nullptr;
 		//テクスチャハンドル
 	    uint32_t Orb_ = 0u;
+		//プレイヤーポジション
+	    Vector3 playerPosition_;
 	    // キーボード入力
 	    Input* input_ = nullptr;
 		//弾

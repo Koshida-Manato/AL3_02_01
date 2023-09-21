@@ -6,16 +6,16 @@
 //Matrix4x4 MakeAffinMatrix(const Vector3& scale, const Vector3& rot, const Vector3& translate);
 
 
-void Player::Initialize(Model* model, uint32_t Orb) {
+void Player::Initialize(Model* model, uint32_t Orb,Vector3 playerPosition) {
 	assert(model);
 
 	model_ = model;
 	Orb_ = Orb;
 
+
 	// X.Y.Z軸方向のスケーリングを設定
 	worldTransform_.scale_ = {5.0f, 5.0f, 5.0f};
-	worldTransform_.translation_ = {0.0f, 0.0f, 0.0f};
-	
+	worldTransform_.translation_ = playerPosition;
 
 	worldTransform_.Initialize();
 	//シングルトンインスタンスを取得する
@@ -30,58 +30,60 @@ Player::~Player() {
 
 void Player::Update() {
 
-	//スケーリング行列を宣言
-	Matrix4x4 matScale = {0};//4行4列
+	////スケーリング行列を宣言
+	//Matrix4x4 matScale = {0};//4行4列
 
-	matScale.m[0][0] = worldTransform_.scale_.x;
-	matScale.m[1][1] = worldTransform_.scale_.y;
-	matScale.m[2][2] = worldTransform_.scale_.z;
-	matScale.m[3][3] = 1;
+	//matScale.m[0][0] = worldTransform_.scale_.x;
+	//matScale.m[1][1] = worldTransform_.scale_.y;
+	//matScale.m[2][2] = worldTransform_.scale_.z;
+	//matScale.m[3][3] = 1;
 
-	//x軸回転行列を宣言
-	Matrix4x4 matRotX = {0};
-	matRotX.m[0][0] = 1;
-	matRotX.m[1][1] = cosf(worldTransform_.rotation_.x);
-	matRotX.m[2][1] = -sinf(worldTransform_.rotation_.x);
-	matRotX.m[1][2] = sinf(worldTransform_.rotation_.x);
-	matRotX.m[2][2] = cosf(worldTransform_.rotation_.x);
-	matRotX.m[3][3] = 1;
+	////x軸回転行列を宣言
+	//Matrix4x4 matRotX = {0};
+	//matRotX.m[0][0] = 1;
+	//matRotX.m[1][1] = cosf(worldTransform_.rotation_.x);
+	//matRotX.m[2][1] = -sinf(worldTransform_.rotation_.x);
+	//matRotX.m[1][2] = sinf(worldTransform_.rotation_.x);
+	//matRotX.m[2][2] = cosf(worldTransform_.rotation_.x);
+	//matRotX.m[3][3] = 1;
 
-	//y軸回転行列を宣言
-	Matrix4x4 matRotY = {0};
-	matRotY.m[0][0] = cosf(worldTransform_.rotation_.y);
-	matRotY.m[1][1] = 1;
-	matRotY.m[0][2] = -sinf(worldTransform_.rotation_.y);
-	matRotY.m[2][0] = sinf(worldTransform_.rotation_.y);
-	matRotY.m[2][2] = cosf(worldTransform_.rotation_.y);
-	matRotY.m[3][3] = 1;
+	////y軸回転行列を宣言
+	//Matrix4x4 matRotY = {0};
+	//matRotY.m[0][0] = cosf(worldTransform_.rotation_.y);
+	//matRotY.m[1][1] = 1;
+	//matRotY.m[0][2] = -sinf(worldTransform_.rotation_.y);
+	//matRotY.m[2][0] = sinf(worldTransform_.rotation_.y);
+	//matRotY.m[2][2] = cosf(worldTransform_.rotation_.y);
+	//matRotY.m[3][3] = 1;
 
-	//z軸回転行列を宣言
-	Matrix4x4 matRotZ = {0};
-	matRotZ.m[0][0] = cosf(worldTransform_.rotation_.z);
-	matRotZ.m[1][0] = sinf(worldTransform_.rotation_.z);
-	matRotZ.m[0][1] = -sinf(worldTransform_.rotation_.z);
-	matRotZ.m[1][1] = cosf(worldTransform_.rotation_.z);
-	matRotZ.m[2][2] = 1;
-	matRotZ.m[3][3] = 1;
+	////z軸回転行列を宣言
+	//Matrix4x4 matRotZ = {0};
+	//matRotZ.m[0][0] = cosf(worldTransform_.rotation_.z);
+	//matRotZ.m[1][0] = sinf(worldTransform_.rotation_.z);
+	//matRotZ.m[0][1] = -sinf(worldTransform_.rotation_.z);
+	//matRotZ.m[1][1] = cosf(worldTransform_.rotation_.z);
+	//matRotZ.m[2][2] = 1;
+	//matRotZ.m[3][3] = 1;
 
-	Matrix4x4 matRot = Multiply(matRotZ,Multiply(matRotX,matRotY));
+	//Matrix4x4 matRot = Multiply(matRotZ,Multiply(matRotX,matRotY));
 
-	//平行移動行列を宣言
-	Matrix4x4 matTrans = {0};
+	////平行移動行列を宣言
+	//Matrix4x4 matTrans = {0};
 
-	matTrans.m[0][0] = 1;
-	matTrans.m[1][1] = 1;
-	matTrans.m[2][2] = 1;
-	matTrans.m[3][3] = 1;
-	matTrans.m[3][0] = worldTransform_.translation_.x;
-	matTrans.m[3][1] = worldTransform_.translation_.y;
-	matTrans.m[3][2] = worldTransform_.translation_.z;
+	//matTrans.m[0][0] = 1;
+	//matTrans.m[1][1] = 1;
+	//matTrans.m[2][2] = 1;
+	//matTrans.m[3][3] = 1;
+	//matTrans.m[3][0] = worldTransform_.translation_.x;
+	//matTrans.m[3][1] = worldTransform_.translation_.y;
+	//matTrans.m[3][2] = worldTransform_.translation_.z;
 
-	worldTransform_.matWorld_ = Multiply(matScale, Multiply(matRot, matTrans));
+	//worldTransform_.matWorld_ = Multiply(matScale, Multiply(matRot, matTrans));
 
-	//行列を定数バッファに転送
-	worldTransform_.TransferMatrix();
+	////行列を定数バッファに転送
+	//worldTransform_.TransferMatrix();
+
+	worldTransform_.UpdateMatrix();
 
 	//デスフラグの立った弾を削除
 	bullets_.remove_if([](PlayerBullet* bullet) {
@@ -181,6 +183,7 @@ void Player::Attack() {
 	}
 }
 void Player::OnCollision(){};
+
 void Player::Draw(ViewProjection& viewProjection) {
 	//3Dモデルの描画
 	model_->Draw(worldTransform_, viewProjection, Orb_);
@@ -199,4 +202,8 @@ Vector3 Player::GetWorldPosition() {
 	worldPos.z = worldTransform_.matWorld_.m[3][2];
 
 	return worldPos;
+}
+void Player::SetParent(const WorldTransform* parent) {
+	//親子関係を結ぶ
+	worldTransform_.parent_ = parent;
 }

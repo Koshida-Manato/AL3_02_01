@@ -1,12 +1,18 @@
-﻿//#pragma once
-//#include "WorldTransform.h"
-//#include "ViewProjection.h"
-//#include "MyMath.h"
-//#include "Input.h"
-//#include "DebugText.h"
-//class RailCamera {
-//public:
-//	void Initialize();
-//
-//	void Update();
-//};
+﻿#pragma once
+#include "Input.h"
+#include "Model.h"
+#include "ViewProjection.h"
+#include "WorldTransform.h"
+
+class RailCamera {
+public:
+	void Initialize(const Vector3& worldPos, const Vector3& position);
+	void Update();
+
+	ViewProjection& GetViewProjection() { return viewProjection_; }
+	WorldTransform& GetWorldTransform() { return worldTransform_; };
+
+private:
+	WorldTransform worldTransform_;
+	ViewProjection viewProjection_;
+};
