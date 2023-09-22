@@ -9,6 +9,9 @@
 
 //自機クラスの前方宣言
 class Player;
+
+//GameSceneの前方宣言(苦肉の策)
+class GameScene;
 /// <summary>
 /// 敵
 /// </summary>
@@ -19,7 +22,7 @@ enum Phase {
 class Enemy {
 	public:
 
-		void Initialize(Model* model, uint32_t textureHandle);
+		void Initialize(Model* model, Vector3& position, const Vector3& velocity);
 	    /// <summary>
 	    /// デストラクタ
 	    /// </summary>
@@ -56,27 +59,30 @@ class Enemy {
 
 		 Vector3 GetWorldPosition();
 
-		 // 弾リストを取得
-	     const std::list<EnemyBullet*>& GetBullets() const { return bullets_; }
+		 bool IsDead() const { return isDead_; }
 
+		  void SetGameScene(GameScene* gameScene) { gameScene_ = gameScene; }
+		 // ゲームシーン
+	     GameScene* gameScene_ = nullptr;
 	private:
 		//ワールド変換データ
 	    WorldTransform worldTransform_;
 		//モデル
-	    Model* enemyModel_ = nullptr;
+	    /*Model* enemyModel_ = nullptr;*/
 	    // モデル
 	    Model* model_ = nullptr;
 		//テクスチャハンドル
 	    uint32_t Teki_ = 0u;
 		//フェーズ
 	    Phase phase_ = Phase::Approach;
-	    // 弾
-	    std::list<EnemyBullet*> bullets_;
 	    // キーボード入力
-	    Input* input_ = nullptr;
+	    /*Input* input_ = nullptr;*/
 		//自キャラ
 	    Player* player_ = nullptr;
-
+	    // デスフラグ
+	    bool isDead_ = false;
+		//速度
+	    Vector3 velocity_;
 
 
 	    float kEnemySpeed = 0;
