@@ -97,7 +97,7 @@ void GameScene::Update() {
 	// レールカメラの更新
 	railCamera_->Update();
 	// 自キャラの更新
-	player_->Update();
+	player_->Update(viewProjection_);
 
 	UpdeteEnemyPopCommand();
 
@@ -209,6 +209,8 @@ void GameScene::Draw() {
 #pragma region 前景スプライト描画
 	// 前景スプライト描画前処理
 	Sprite::PreDraw(commandList);
+
+	player_->DrawUI();
 
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる

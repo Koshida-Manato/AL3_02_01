@@ -86,6 +86,27 @@ Matrix4x4 Multiply(Matrix4x4 m1, Matrix4x4 m2) {
 	                 m1.m[3][3] * m2.m[3][3];
 	return result;
 };
+
+Vector3 Multiply(const float& v1, const Vector3& v2) {
+	Vector3 result{};
+	result.x = v1 * v2.x;
+	result.y = v1 * v2.y;
+	result.z = v1 * v2.z;
+	return result;
+}
+
+Vector3 Multiply(Vector3 vector, Matrix4x4 matrix) {
+	Vector3 result = {};
+
+	result.x = vector.x * matrix.m[0][0] + vector.y * matrix.m[0][1] + vector.z * matrix.m[0][2] +
+	           matrix.m[0][3];
+	result.y = vector.x * matrix.m[1][0] + vector.y * matrix.m[1][1] + vector.z * matrix.m[1][2] +
+	           matrix.m[1][3];
+	result.z = vector.x * matrix.m[2][0] + vector.y * matrix.m[2][1] + vector.z * matrix.m[2][2] +
+	           matrix.m[2][3];
+
+	return result;
+}
 // 1.X軸回転行列
 Matrix4x4 MakeRotateXMatrix(float radian) {
 	Matrix4x4 result;
@@ -336,5 +357,49 @@ Matrix4x4 Inverse(const Matrix4x4& m) {
 	                 (m.m[0][0] * m.m[1][1] * m.m[2][2] + m.m[0][1] * m.m[1][2] * m.m[2][0] +
 	                  m.m[0][2] * m.m[1][0] * m.m[2][1] - m.m[0][2] * m.m[1][1] * m.m[2][0] -
 	                  m.m[0][1] * m.m[1][0] * m.m[2][2] - m.m[0][0] * m.m[1][2] * m.m[2][1]);
+	return result;
+}
+// ビューポート変換行列
+Matrix4x4 MakeViewPortMatrix(
+    float left, float top, float width, float height, float minDepth, float maxDepth) {
+	Matrix4x4 result;
+
+	result.m[0][0] = width / 2;
+	result.m[0][1] = 0;
+	result.m[0][2] = 0;
+	result.m[0][3] = 0;
+
+	result.m[1][0] = 0;
+	result.m[1][1] = -(height / 2);
+	result.m[1][2] = 0;
+	result.m[1][3] = 0;
+
+	result.m[2][0] = 0;
+	result.m[2][1] = 0;
+	result.m[2][2] = maxDepth - minDepth;
+	result.m[2][3] = 0;
+
+	result.m[3][0] = left + width / 2;
+	result.m[3][1] = top + height / 2;
+	result.m[3][2] = minDepth;
+	result.m[3][3] = 1;
+
+	return result;
+}
+// 座標返還
+Vector3 Transform(const Vector3& vector, const Matrix4x4& matrix) {
+	Vector3 result;
+	result.x = vector.x * matrix.m[0][0] + vector.y * matrix.m[1][0] + vector.z * matrix.m[2][0] +
+	           1.0f * matrix.m[3][0];
+	result.y = vector.x * matrix.m[0][1] + vector.y * matrix.m[1][1] + vector.z * matrix.m[2][1] +
+	           1.0f * matrix.m[3][1];
+	result.z = vector.x * matrix.m[0][2] + vector.y * matrix.m[1][2] + vector.z * matrix.m[2][2] +
+	           1.0f * matrix.m[3][2];
+	float w = vector.x * matrix.m[0][3] + vector.y * matrix.m[1][3] + vector.z * matrix.m[2][3] +
+	          1.0f * matrix.m[3][3];
+	assert(w != 0.0f);
+	result.x /= w;
+	result.y /= w;
+	result.z /= w;
 	return result;
 }

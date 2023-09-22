@@ -6,6 +6,7 @@
 #include "Model.h"
 #include "PlayerBullet.h"
 #include <list>
+#include <Sprite.h>
 
 ///<summary>
 ///自キャラ
@@ -27,7 +28,7 @@ class Player {
 		///< summary>
 		/// 更新
 		///</sumary>
-		void Update();
+	    void Update(ViewProjection& viewProjection);
 
 		///< summary>
 		/// 描画
@@ -53,6 +54,11 @@ class Player {
 		/// </summary>
 	    void SetParent(const WorldTransform* parent);
 
+		/// <summary>
+	    /// UI描画
+	    /// </summary>
+	    void DrawUI();
+
 	private:
 		//ワールド変換データ
 	    WorldTransform worldTransform_;
@@ -66,5 +72,10 @@ class Player {
 	    Input* input_ = nullptr;
 		//弾
 	    std::list<PlayerBullet*> bullets_;
+		//3Dレティクル用ワールドトランスフォーム
+	    WorldTransform worldTransform3DReticle_;
+
+		// 2Dレティクル用スプライト
+	    Sprite* sprite2DReticle_ = nullptr;
 		
 };
