@@ -1,13 +1,15 @@
 ﻿#include "Enemy.h"
 #include "Player.h"
+#include "GameScene.h"
 #include <cassert>
 #include "ImGuiManager.h"
 
-void Enemy::Initialize(Model* model, uint32_t Teki) { 
+void Enemy::Initialize(Model* model, Vector3& position, const Vector3& velocity) { 
 	assert(model); 
 
 	model_ = model;
-	Teki_ = Teki;
+	// テクスチャ読み込み
+	Teki_ = TextureManager::Load("./Resources/Enemy.png");
 
 	// X.Y.Z軸方向のスケーリングを設定
 	worldTransform_.scale_ = {4.0f, 4.0f, 4.0f};
@@ -17,12 +19,16 @@ void Enemy::Initialize(Model* model, uint32_t Teki) {
 
 	//接近フェーズ初期化
 	ApproachInitialize();
+	// 引数で受け取った初期座標をセット
+	worldTransform_.translation_ = position;
+	// 引数で受け取った速度をメンバ変数に代入
+	velocity_ = velocity;
 }
 
 Enemy::~Enemy() {
-	for (EnemyBullet* bullet : bullets_) {
+	/*for (EnemyBullet* bullet : bullets_) {
 		delete bullet;
-	}
+	}*/
 }
 
 void Enemy::Update() {
@@ -35,7 +41,7 @@ void Enemy::Update() {
 	case Phase::Approach:
 	default:
 		// キャラクターの移動の速さ
-		kEnemySpeed = -0.1f;
+		kEnemySpeed = -0.2f;
 		enemyMove.z += kEnemySpeed;
 		// 座標移動(ベクトルの加算)
 		worldTransform_.translation_.x += enemyMove.x;
@@ -81,7 +87,7 @@ void Enemy::ApproachInitialize() {
 	//}
 }
 
-void Enemy::OnCollision() {}
+void Enemy::OnCollision() { isDead_ = true; }
 
 void Enemy::Fire() {
 	assert(player_);
@@ -103,17 +109,12 @@ void Enemy::Fire() {
 	// 弾を生成し、初期化
 	EnemyBullet* newBullet = new EnemyBullet();
 	newBullet->Initialize(model_, worldTransform_.translation_, velocity);
-	// 弾を登録する
-	bullets_.push_back(newBullet);
+	gameScene_->AddEnemyBullet(newBullet);
 }
 
 void Enemy::Draw(ViewProjection& viewProjection) {
 	// 3Dモデルの描画
 	    model_->Draw(worldTransform_, viewProjection, Teki_);
-	// 弾描画
-	for (EnemyBullet* bullet : bullets_) {
-		bullet->Draw(viewProjection);
-	}
 }
 
 Vector3 Enemy::GetWorldPosition() {

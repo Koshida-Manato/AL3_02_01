@@ -53,10 +53,22 @@ public: // メンバ関数
 	/// <summary>
 	/// 敵弾を追加する
 	/// </summary>
-	/*void AddEnemyBullet(EnemyBullet* enemyBullet);*/
+	void AddEnemyBullet(EnemyBullet* enemyBullet);
+
+	/// <summary>
+	/// 敵発生データの読み込み
+	/// </summary>
+	void LoadEnemyPopData();
+
+	/// <summary>
+	/// 敵発生コマンドの更新
+	/// </summary>
+	void UpdeteEnemyPopCommand();
 
 	 // 弾リストを取得
 	const std::list<EnemyBullet*>& GetBullets() const { return bullets_; }
+
+	void EnemyOccurrence(Vector3 position, Vector3 velocity);
 
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
@@ -81,7 +93,7 @@ private: // メンバ変数
 	//自キャラ
 	Player* player_ = nullptr;
 	//敵
-	Enemy* enemy_ = nullptr;
+	/*Enemy* enemy_ = nullptr;*/
 	//天球
 	Skydome* skydome_ = nullptr;
 	//レールカメラ
@@ -93,6 +105,15 @@ private: // メンバ変数
 	Vector3 rotate;
 	//モデル
 	Model* model_ = nullptr;
-	// 弾
+	//	敵弾
 	std::list<EnemyBullet*> bullets_;
+	// 敵
+	std::list<Enemy*> enemys_;
+	// 敵発生コマンド
+	std::stringstream enemyPopCommands;
+
+	int standFlag = false;
+	int standTime = 0;
 };
+
+
