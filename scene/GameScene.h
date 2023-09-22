@@ -13,6 +13,7 @@
 #include "Enemy.h"
 #include "Skydome.h"
 #include "RailCamera.h"
+#include "Scene.h"
 
 /// <summary>
 /// ゲームシーン
@@ -70,6 +71,8 @@ public: // メンバ関数
 
 	void EnemyOccurrence(Vector3 position, Vector3 velocity);
 
+	
+
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
@@ -114,6 +117,11 @@ private: // メンバ変数
 
 	int standFlag = false;
 	int standTime = 0;
+
+	bool isSceneEnd = false;
+
+	bool IsSceneEnd() { return isSceneEnd; }
+	SceneType NextScene() { return SceneType::kGamePlay; }
 };
 
 

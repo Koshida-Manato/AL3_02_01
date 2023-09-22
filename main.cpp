@@ -5,6 +5,7 @@
 #include "ImGuiManager.h"
 #include "PrimitiveDrawer.h"
 #include "TextureManager.h"
+#include "TitleScene.h"
 #include "WinApp.h"
 #include <stdio.h>
 
@@ -18,6 +19,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	AxisIndicator* axisIndicator = nullptr;
 	PrimitiveDrawer* primitiveDrawer = nullptr;
 	GameScene* gameScene = nullptr;
+	TitleScene* titleScene = nullptr;
 
 	// ゲームウィンドウの作成
 	win = WinApp::GetInstance();
@@ -62,37 +64,71 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	gameScene = new GameScene();
 	gameScene->Initialize();
 
+	// タイトルシーンの初期化
+	titleScene = new TitleScene;
+	titleScene->Initialize();
+
+	SceneType sceneNo = SceneType::kTitle;
+
 	// メインループ
 	while (true) {
 		// メッセージ処理
-		if (win->ProcessMessage()) {
+		/*if (win->ProcessMessage()) {
 			break;
-		}
+		}*/
+
 		// ImGui受付開始
 		imguiManager->Begin();
 		// 入力関連の毎フレーム処理
 		input->Update();
-		// ゲームシーンの毎フレーム処理
-		gameScene->Update();
-		// 軸表示の更新
-		axisIndicator->Update();
-		// ImGui受付終了
-		imguiManager->End();
 
-		// 描画開始
-		dxCommon->PreDraw();
-		// ゲームシーンの描画
-		gameScene->Draw();
-		// 軸表示の描画
-		axisIndicator->Draw();
-		// プリミティブ描画のリセット
-		primitiveDrawer->Reset();
-		// ImGui描画
-		imguiManager->Draw();
-		// 描画終了
-		dxCommon->PostDraw();
-		
+		switch (sceneNo) {
+		case SceneType::kTitle:
+
+			titleScene->Update();
+
+			if (titleScene->IsSceneEnd()) {
+				// 次のシーンの値を代入してシーン切り替え
+				sceneNo = titleScene->NextScene();
+			}
+
+			break;
+
+		case SceneType::kGamePlay:
+			// ゲームシーンの毎フレーム処理
+			gameScene->Update();
+			
+			break;
+		}
 	}
+
+	// 軸表示の更新
+	axisIndicator->Update();
+	// ImGui受付終了
+	imguiManager->End();
+
+	switch (sceneNo) {
+	case SceneType::kTitle:
+		titleScene->Draw();
+		break;
+
+	case SceneType::kGamePlay:
+		gameScene->Draw();
+		break;
+	}
+
+	// 描画開始
+	dxCommon->PreDraw();
+	// ゲームシーンの描画
+	gameScene->Draw();
+	// 軸表示の描画
+	axisIndicator->Draw();
+	// プリミティブ描画のリセット
+	primitiveDrawer->Reset();
+	// ImGui描画
+	imguiManager->Draw();
+	// 描画終了
+	dxCommon->PostDraw();
 
 	// 各種解放
 	SafeDelete(gameScene);

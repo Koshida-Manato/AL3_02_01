@@ -95,29 +95,33 @@ void Player::Update() {
 	});
 
 	//////////プレイヤーの移動///////////////
+	// キャラクターの移動ベクトル
+	Vector3 playerMove = {0, 0, 0};
 
+	// キャラクターの移動の速さ
+	const float kCharacterSpeed = 0.2f;
 	////押した方向で移動ベクトルを変更(左右)
-	//if (input_->PushKey(DIK_LEFT)) {
-	//	playerMove.x -= kCharacterSpeed;
-	//} else if (input_->PushKey(DIK_RIGHT)) {
-	//	playerMove.x += kCharacterSpeed;
-	//}
-	////押した方向で移動ベクトルを変更(上下)
-	//if (input_->PushKey(DIK_UP)) {
-	//	playerMove.y += kCharacterSpeed;
-	//} else if (input_->PushKey(DIK_DOWN)) {
-	//	playerMove.y -= kCharacterSpeed;
-	//}
-	////座標移動(ベクトルの加算)
-	//worldTransform_.translation_.x += playerMove.x;
-	//worldTransform_.translation_.y += playerMove.y;
-	//worldTransform_.translation_.z += playerMove.z;
+	if (input_->PushKey(DIK_LEFT)) {
+		playerMove.x -= kCharacterSpeed;
+	} else if (input_->PushKey(DIK_RIGHT)) {
+		playerMove.x += kCharacterSpeed;
+	}
+	//押した方向で移動ベクトルを変更(上下)
+	if (input_->PushKey(DIK_UP)) {
+		playerMove.y += kCharacterSpeed;
+	} else if (input_->PushKey(DIK_DOWN)) {
+		playerMove.y -= kCharacterSpeed;
+	}
+	//座標移動(ベクトルの加算)
+	worldTransform_.translation_.x += playerMove.x;
+	worldTransform_.translation_.y += playerMove.y;
+	worldTransform_.translation_.z += playerMove.z;
 	//////////////////////////////////////////
 
 	
 
 	//キャラクターの座標を画面表示する処理
-	/*ImGui::Begin("Debug");*/
+	ImGui::Begin("Debug");
 	float playerPos[] = {
 	    worldTransform_.translation_.x, 
 		worldTransform_.translation_.y,
@@ -132,13 +136,13 @@ void Player::Update() {
 	playerPos[0] = min(playerPos[0], +kMoveLimitX);
 	playerPos[1] = max(playerPos[1], -kMoveLimitY);
 	playerPos[1] = min(playerPos[1], +kMoveLimitY);
-	/*ImGui::SliderFloat3("PlayerPos", playerPos, -30.0f, 30.0f);*/
+	ImGui::SliderFloat3("PlayerPos", playerPos, -30.0f, 30.0f);
 	//ここで実際の座標を変更する
 	worldTransform_.translation_.x = playerPos[0];
 	worldTransform_.translation_.y = playerPos[1];
 	worldTransform_.translation_.z = playerPos[2];
 
-	/*ImGui::End();*/
+	ImGui::End();
 
 	//回転速さ[ラジアン/flame]
 	const float kRotSpeed = 0.02f;
@@ -157,6 +161,7 @@ void Player::Update() {
 		bullet->Update();
 	}
 }
+
 void Player::Attack() {
 	if (input_->TriggerKey(DIK_SPACE)) {
 		//弾があれば解放する
@@ -176,35 +181,35 @@ void Player::Attack() {
 		// 弾を登録する
 		bullets_.push_back(newBullet);
 	}
-	XINPUT_STATE joyState;
+	//XINPUT_STATE joyState;
 
-	// ゲームパッド未接続なら何もせず抜ける
-	if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
-		return;
-	}
+	//// ゲームパッド未接続なら何もせず抜ける
+	//if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
+	//	return;
+	//}
 
-	// Rトリガーを押していたら
-	if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER) {
-		// 弾の速度
-		const float kBulletSpeed = 1.0f;
-		Vector3 velocity(0, 0, kBulletSpeed);
+	//// Rトリガーを押していたら
+	//if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER) {
+	//	// 弾の速度
+	//	const float kBulletSpeed = 1.0f;
+	//	Vector3 velocity(0, 0, kBulletSpeed);
 
-		// 速度ベクトルを時機向きに合わせて回転させる
-		velocity = TransformNormal(velocity, worldTransform_.matWorld_);
+	//	// 速度ベクトルを時機向きに合わせて回転させる
+	//	velocity = TransformNormal(velocity, worldTransform_.matWorld_);
 
-		velocity = Subtract(
-		    {worldTransform3DReticle_.matWorld_.m[3][0], worldTransform3DReticle_.matWorld_.m[3][1],
-		     worldTransform3DReticle_.matWorld_.m[3][2]},
-		    GetWorldPosition());
+	//	velocity = Subtract(
+	//	    {worldTransform3DReticle_.matWorld_.m[3][0], worldTransform3DReticle_.matWorld_.m[3][1],
+	//	     worldTransform3DReticle_.matWorld_.m[3][2]},
+	//	    GetWorldPosition());
 
-		velocity = Multiply(kBulletSpeed, Normalize(velocity));
-		// 弾を生成し、初期化
-		PlayerBullet* newBullet = new PlayerBullet();
-		newBullet->Initialize(model_, GetWorldPosition(), velocity);
+	//	velocity = Multiply(kBulletSpeed, Normalize(velocity));
+	//	// 弾を生成し、初期化
+	//	PlayerBullet* newBullet = new PlayerBullet();
+	//	newBullet->Initialize(model_, GetWorldPosition(), velocity);
 
-		// 弾を登録する
-		bullets_.push_back(newBullet);
-	}
+	//	// 弾を登録する
+	//	bullets_.push_back(newBullet);
+	//}
 }
 void Player::OnCollision(){};
 
