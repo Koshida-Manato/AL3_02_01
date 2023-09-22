@@ -53,7 +53,10 @@ public: // メンバ関数
 	/// <summary>
 	/// 敵弾を追加する
 	/// </summary>
-	void AddEnemyBullet(EnemyBullet* enemyBullet);
+	/*void AddEnemyBullet(EnemyBullet* enemyBullet);*/
+
+	 // 弾リストを取得
+	const std::list<EnemyBullet*>& GetBullets() const { return bullets_; }
 
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
@@ -90,8 +93,6 @@ private: // メンバ変数
 	Vector3 rotate;
 	//モデル
 	Model* model_ = nullptr;
-
-	/// <summary>
-	/// ゲームシーン用
-	/// </summary>
+	// 弾
+	std::list<EnemyBullet*> bullets_;
 };

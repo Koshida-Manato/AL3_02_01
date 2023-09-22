@@ -67,21 +67,6 @@ void Enemy::Update() {
 		break;
 	}
 	worldTransform_.UpdateMatrix();
-	
-	
-	// 弾更新
-	for (EnemyBullet* bullet : bullets_) {
-		bullet->Update();
-	}
-
-	// デスフラグの立った弾を削除
-	bullets_.remove_if([](EnemyBullet* bullet) {
-		if (bullet->IsDead()) {
-			delete bullet;
-			return true;
-		}
-		return false;
-	});
 }
 
 void Enemy::ApproachInitialize() {

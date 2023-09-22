@@ -56,9 +56,6 @@ class Enemy {
 
 		 Vector3 GetWorldPosition();
 
-		 // 弾リストを取得
-	     const std::list<EnemyBullet*>& GetBullets() const { return bullets_; }
-
 	private:
 		//ワールド変換データ
 	    WorldTransform worldTransform_;
@@ -70,8 +67,6 @@ class Enemy {
 	    uint32_t Teki_ = 0u;
 		//フェーズ
 	    Phase phase_ = Phase::Approach;
-	    // 弾
-	    std::list<EnemyBullet*> bullets_;
 	    // キーボード入力
 	    Input* input_ = nullptr;
 		//自キャラ
