@@ -271,7 +271,7 @@ void GameScene::CheckAllCollisions() {
 
 			if (d <= 6.0f) {
 				// 敵キャラの衝突時コールバックを呼び出す
-				/*enemy_->OnCollision();*/
+				enemy->OnCollision();
 				// 自弾の衝突時コールバックを呼び出す
 				bullet->OnCollision();
 			}
