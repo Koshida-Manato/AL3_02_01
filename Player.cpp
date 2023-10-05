@@ -121,7 +121,7 @@ void Player::Update() {
 	
 
 	//キャラクターの座標を画面表示する処理
-	ImGui::Begin("Debug");
+	/*ImGui::Begin("Debug");*/
 	float playerPos[] = {
 	    worldTransform_.translation_.x, 
 		worldTransform_.translation_.y,
@@ -136,13 +136,13 @@ void Player::Update() {
 	playerPos[0] = min(playerPos[0], +kMoveLimitX);
 	playerPos[1] = max(playerPos[1], -kMoveLimitY);
 	playerPos[1] = min(playerPos[1], +kMoveLimitY);
-	ImGui::SliderFloat3("PlayerPos", playerPos, -30.0f, 30.0f);
+	/*ImGui::SliderFloat3("PlayerPos", playerPos, -30.0f, 30.0f);*/
 	//ここで実際の座標を変更する
 	worldTransform_.translation_.x = playerPos[0];
 	worldTransform_.translation_.y = playerPos[1];
 	worldTransform_.translation_.z = playerPos[2];
 
-	ImGui::End();
+	/*ImGui::End();*/
 
 	//回転速さ[ラジアン/flame]
 	const float kRotSpeed = 0.02f;

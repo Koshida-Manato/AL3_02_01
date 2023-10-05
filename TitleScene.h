@@ -48,4 +48,6 @@ private://メンバ変数
 	uint32_t Title_ = 0;
 	// モデル
 	Model* model_ = nullptr;
+	// 2Dレティクル用スプライト
+	Sprite* sprite2DTitle_ = nullptr;
 };
